@@ -1,0 +1,17 @@
+homicidios,ano,local,prop_homicidios_total
+111,2019,Residência,35.55
+71,2019,Via Pública,21.58
+12,2019,Matagal/Mata,4.27
+6,2019,Bar,1.82
+9,2019,Hotel/Motel,2.73
+12,2019,Rodovia/BR/Estrada,3.65
+4,2019,Hospital,1.21
+4,2019,Parque,1.21
+4,2019,Terreno Baldio,1.21
+3,2019,Sítio,0.92
+2,2019,Canavial,0.61
+2,2019,Praia,0.61
+2,2019,Rio,0.61
+2,2019,Serra,0.61
+38,2019,Local com ao menos um caso,11.55
+39,2019,Não Identificado,11.85
