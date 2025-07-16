@@ -54,10 +54,10 @@ function calcularQuartis(array) {
 async function prepararDadosReais() {
     // Lê todos os arquivos necessários
     const [dadosGrupo, dadosBrasil, dadosLocal, dadosRaca] = await Promise.all([
-        lerCSV('data/homicidios_grupo.csv'),
-        lerCSV('data/homicidios_brasil.csv'),
-        lerCSV('data/homicidios_local.csv'),
-        lerCSV('data/homicidios_raca.csv')
+        lerCSV('../data/homicidios_grupo.csv'),
+        lerCSV('../data/homicidios_brasil.csv'),
+        lerCSV('../data/homicidios_local.csv'),
+        lerCSV('../data/homicidios_raca.csv')
     ]);
 
     // 1. Homicídios por grupo ao longo dos anos
@@ -123,7 +123,7 @@ async function prepararDadosReais() {
     });
 
     // 4. Dados de causa de óbito para boxplot
-    const dadosCausaObito = await lerCSV('data/CausaObito.csv');
+    const dadosCausaObito = await lerCSV('../data/CausaObito.csv');
     
     // 5. Preparar dados para estatísticas descritivas
     const estatisticasAnuais = anos.map(ano => {
