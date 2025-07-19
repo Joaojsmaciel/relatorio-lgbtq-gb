@@ -1,18 +1,17 @@
 # instalar os pacotes 
-
 library(basedosdados)
 library(tidyverse)
 library(bigrquery)
+library(ggplot2)
+
 
 # etapa 1: autenticar com sua conta Google
-#isso abrirá uma janela no navegador para login
-
 bq_auth()
 
-# etapa 2:definir o ID do projeto da cobrança
+# etapa 2: definir o ID do projeto da cobrança
 basedosdados::set_billing_id("inspired-bus-461420-t4")
 
-# etapa 3:
+# etapa 3: escrever queries
 query_causa_obito <- "
 SELECT
     dados.prop_homicidios_total as prop_homicidios_total,
@@ -56,7 +55,7 @@ SELECT
 FROM `basedosdados.br_ggb_relatorio_lgbtqi.raca_cor` AS dados
 "
 
-# etapa 4:
+# etapa 4: ler dados
 df_causa_obito <- basedosdados::read_sql(query_causa_obito,
                                          billing_project_id = "inspired-bus-461420-t4")
 
@@ -72,19 +71,31 @@ df_local <- basedosdados::read_sql(query_local,
 df_raca <- basedosdados::read_sql(query_raca,
                                   billing_project_id = "inspired-bus-461420-t4")
 
-# ETAPA 5:
+# etapa 5: salvar CSV
 write_csv(df_causa_obito, "data/CausaObito.csv")
 write_csv(df_brasil, "data/homicidios_brasil.csv")
 write_csv(df_grupo, "data/homicidios_grupo.csv")
 write_csv(df_local, "data/homicidios_local.csv")
 write_csv(df_raca, "data/homicidios_raca.csv")
 
-# Para carregar o dado direto no R
-
-
+# carregar direto no R (opcional)
 read_sql(query_causa_obito, billing_project_id = "inspired-bus-461420-t4")
 read_sql(query_brasil, billing_project_id = "inspired-bus-461420-t4")
 read_sql(query_grupo, billing_project_id = "inspired-bus-461420-t4")
 read_sql(query_local, billing_project_id = "inspired-bus-461420-t4")
 read_sql(query_raca, billing_project_id = "inspired-bus-461420-t4")
 
+# ETAPA 6: gerar boxplot - homicídios por grupo ao longo dos anos
+ggplot(df_grupo, aes(x = grupo, y = homicidios)) +
+  geom_boxplot(fill = "steelblue", outlier.color = "red", outlier.shape = 1) +
+  facet_wrap(~ ano, scales = "free_y") +
+  theme_minimal() +
+  labs(
+    title = "Distribuição de Homicídios por Grupo LGBTQIA+ (por Ano)",
+    x = "Grupo",
+    y = "Número de Homicídios"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    strip.text = element_text(face = "bold")
+  )
