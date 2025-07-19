@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Final - Homicídios LGBTQI+</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html">📊 Análise LGBTQI+</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Dashboard</a></li>
+                <li><a href="analise-detalhada.html" class="nav-link">Análise Detalhada</a></li>
+                <li><a href="relatorio-final.html" class="nav-link active">Relatório Final</a></li>
+                <li><a href="metodologia.html" class="nav-link">Metodologia</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="header">
+        <div class="container">
+            <h1>Relatório Final<br>Homicídios LGBTQI+ no Brasil</h1>
+            <p class="subtitle">Seu Nome<br>2025-07-08</p>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <!-- Índice -->
+            <section class="section">
+                <h2>Índice</h2>
+                <ol>
+                    <li><a href="#introducao">Introdução</a></li>
+                    <li><a href="#pacotes">Pacotes e Ferramentas</a></li>
+                    <li><a href="#download">Download e Leitura dos Dados</a></li>
+                    <li><a href="#eda">Análise Exploratória dos Dados (EDA)</a></li>
+                    <li><a href="#outliers">Análise de Outliers</a></li>
+                    <li><a href="#visualizacoes">Visualizações</a></li>
+                    <li><a href="#tabelas">Tabelas Dinâmicas</a></li>
+                    <li><a href="#hipotese">Testes de Hipótese</a></li>
+                    <li><a href="#conclusao">Conclusão</a></li>
+                </ol>
+            </section>
+
+            <!-- Introdução -->
+            <section class="section" id="introducao">
+                <h2>1. Introdução</h2>
+                <p>Este relatório apresenta uma análise completa dos homicídios contra pessoas LGBTQI+ no Brasil, utilizando dados do Relatório GGB (Grupo Gay da Bahia) para o período de 2011 a 2020. São abordadas análises exploratórias, identificação de outliers, visualizações, tabelas dinâmicas e testes de hipótese, com o objetivo de evidenciar padrões, tendências e desigualdades regionais.</p>
+            </section>
+
+            <!-- Pacotes -->
+            <section class="section" id="pacotes">
+                <h2>2. Pacotes e Ferramentas</h2>
+                <ul>
+                    <li><strong>R</strong> (basedosdados, tidyverse, bigrquery)</li>
+                    <li><strong>HTML/CSS/JS</strong> (Chart.js, scripts próprios)</li>
+                    <li><strong>Google BigQuery</strong> (armazenamento e consulta)</li>
+                </ul>
+            </section>
+
+            <!-- Download dos Dados -->
+            <section class="section" id="download">
+                <h2>3. Download e Leitura dos Dados</h2>
+                <p>Os dados foram baixados da plataforma <a href="https://basedosdados.org/dataset/br-ggb-relatorio-lgbtqi" target="_blank">Base dos Dados</a> usando queries SQL e processados em R. Foram utilizados os seguintes arquivos:</p>
+                <ul>
+                    <li>homicidios_brasil.csv</li>
+                    <li>homicidios_grupo.csv</li>
+                    <li>homicidios_local.csv</li>
+                    <li>homicidios_raca.csv</li>
+                    <li>CausaObito.csv</li>
+                </ul>
+            </section>
+
+            <!-- EDA -->
+            <section class="section" id="eda">
+                <h2>4. Análise Exploratória dos Dados (EDA)</h2>
+                <p><strong>Número de linhas:</strong> <span id="n-linhas">-</span></p>
+                <p><strong>Número de colunas:</strong> <span id="n-colunas">-</span></p>
+                <div class="chart-container">
+                    <canvas id="grafico-eda"></canvas>
+                </div>
+                <div class="chart-description">
+                    <p>Distribuição dos homicídios ao longo dos anos.</p>
+                </div>
+            </section>
+
+            <!-- Outliers -->
+            <section class="section" id="outliers">
+                <h2>5. Análise de Outliers</h2>
+                <div class="chart-container">
+                    <canvas id="boxplot-relatorio"></canvas>
+                </div>
+                <div class="chart-description">
+                    <p>Boxplot dos homicídios por grupo, destacando valores extremos.</p>
+                </div>
+            </section>
+
+            <!-- Visualizações -->
+            <section class="section" id="visualizacoes">
+                <h2>6. Visualizações</h2>
+                <div class="chart-container">
+                    <canvas id="grafico-pizza-relatorio"></canvas>
+                </div>
+                <div class="chart-description">
+                    <p>Proporção de homicídios por causa de óbito.</p>
+                </div>
+            </section>
+
+            <!-- Tabelas Dinâmicas -->
+            <section class="section" id="tabelas">
+                <h2>7. Tabelas Dinâmicas</h2>
+                <div class="pivot-table-container">
+                    <table class="pivot-table">
+                        <thead>
+                            <tr>
+                                <th>Ano</th>
+                                <th>Grupo</th>
+                                <th>Homicídios</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pivot-table-relatorio">
+                            <!-- Dados via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Testes de Hipótese -->
+            <section class="section" id="hipotese">
+                <h2>8. Testes de Hipótese</h2>
+                <div class="chart-description">
+                    <p><strong>Exemplo:</strong> Diferença de médias de homicídios entre grupos "Gay" e "Trans ou Travesti".</p>
+                    <p id="resultado-teste"></p>
+                </div>
+            </section>
+
+            <!-- Conclusão -->
+            <section class="section" id="conclusao">
+                <h2>9. Conclusão</h2>
+                <p>O relatório evidenciou padrões de violência, grupos mais vulneráveis e diferenças regionais, contribuindo para o entendimento do cenário de homicídios LGBTQI+ no Brasil.</p>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 - Relatório Final Homicídios LGBTQI+ no Brasil</p>
+            <p>Dados: Relatório GGB (Grupo Gay da Bahia) | Desenvolvido para fins educacionais</p>
+        </div>
+    </footer>
+    <script src="../js/relatorio-final.js"></script>
+</body>
+</html> 
