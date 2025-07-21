@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Homicídios LGBTQI+ no Brasil</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html">📊 Análise LGBTQI+</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="metodologia.html" class="nav-link">Metodologia</a></li>
+                <li><a href="index.html" class="nav-link active">Análise Inicial</a></li>
+                <li><a href="analise-detalhada.html" class="nav-link">Análise Detalhada</a></li>
+                <li><a href="tabelas.html" class="nav-link">Tabelas</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="header">
+        <div class="container">
+            <h1>Análise de Homicídios LGBTQI+ no Brasil</h1>
+            <p class="subtitle">Dados do Relatório GGB (Grupo Gay da Bahia)</p>
+            <div class="periodo-analise">
+                <span class="periodo-label">Período da Análise:</span>
+                <span class="periodo-datas">2000 - 2020</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <!-- Resumo Executivo -->
+            <section class="section">
+                <h2>Resumo Executivo</h2>
+                <p>Entre 2000 e 2019, foram registrados <strong>4809 homicídios</strong> de pessoas LGBTQI+ no Brasil, segundo dados do Relatório GGB (Grupo Gay da Bahia). Este relatório apresenta as principais tendências, grupos mais vulneráveis e padrões regionais de violência, com base em dados reais e atualizados.</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Total de Homicídios</h3>
+                        <div class="stat-number" id="total-homicidios">4809</div>
+                        <p class="stat-description">Registrados no período</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Ano com Mais Vítimas</h3>
+                        <div class="stat-number" id="ano-mais-vitimas">-</div>
+                        <p class="stat-description">Maior número de casos</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Grupo Mais Afetado</h3>
+                        <div class="stat-number" id="grupo-mais-afetado">-</div>
+                        <p class="stat-description">Maior vulnerabilidade</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Local Mais Crítico</h3>
+                        <div class="stat-number" id="local-mais-critico">-</div>
+                        <p class="stat-description">Maior incidência</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Evolução Temporal -->
+            <section class="section">
+                <h2>Evolução Temporal dos Homicídios (2000-2019)</h2>
+                <div class="chart-container">
+                    <canvas id="evolucao-temporal"></canvas>
+                </div>
+                <div class="chart-description">
+                    <p>Esta análise mostra a evolução dos homicídios LGBTQI+ ao longo dos anos, permitindo identificar tendências e períodos de maior violência.</p>
+                </div>
+            </section>
+
+            <!-- Análise por Grupo -->
+            <section class="section">
+                <h2>Distribuição por Grupo LGBTQI+ (2011-2020)</h2>
+                <div class="chart-container">
+                    <canvas id="distribuicao-grupo"></canvas>
+                </div>
+                <div class="chart-description">
+                    <p>Análise da vulnerabilidade de diferentes grupos dentro da comunidade LGBTQI+, mostrando quais são mais afetados pela violência.</p>
+                </div>
+            </section>
+
+            <!-- Análise por Local -->
+            <section class="section">
+                <h2>Homicídios por Localidade (2019)</h2>
+                <div class="chart-container">
+                    <canvas id="homicidios-local"></canvas>
+                </div>
+                <div class="chart-description">
+                    <p>Distribuição geográfica dos homicídios, identificando as localidades com maior incidência de violência contra LGBTQI+.</p>
+                </div>
+            </section>
+
+            <!-- Análise por Raça/Cor -->
+            <section class="section">
+                <h2>Análise por Raça/Cor (2011-2019)</h2>
+                <div class="chart-container">
+                    <canvas id="homicidios-raca"></canvas>
+                </div>
+                <div class="chart-description">
+                    <p>Análise da interseccionalidade entre orientação sexual/identidade de gênero e raça/cor, mostrando como essas características se combinam na vulnerabilidade.</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Causas de Óbito (2019)</h2>
+                <div class="chart-container">
+                    <canvas id="causas-obito"></canvas>
+                </div>
+                <div class="chart-description">
+                    <p>Análise das principais causas de óbito entre vítimas LGBTQI+, fornecendo insights sobre os tipos de violência mais comuns.</p>
+                </div>
+            </section>
+
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 - Análise de Dados sobre Homicídios LGBTQI+ no Brasil</p>
+            <p>Dados: Relatório GGB (Grupo Gay da Bahia) | Desenvolvido para fins educacionais</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+</html> 

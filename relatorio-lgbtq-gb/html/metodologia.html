@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodologia - Análise de Homicídios LGBTQI+</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <a href="index.html">📊 Análise LGBTQI+</a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="metodologia.html" class="nav-link active">Metodologia</a></li>
+                <li><a href="index.html" class="nav-link">Análise Inicial</a></li>
+                <li><a href="analise-detalhada.html" class="nav-link">Análise Detalhada</a></li>
+                <li><a href="tabelas.html" class="nav-link">Tabelas</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="header">
+        <div class="container">
+            <h1>Metodologia</h1>
+            <p class="subtitle">Descrição dos métodos, fontes e critérios utilizados</p>
+            <div class="periodo-analise">
+                <span class="periodo-label">Período da Análise:</span>
+                <span class="periodo-datas">2000 - 2020</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <!-- Visão Geral -->
+            <section class="section">
+                <h2>Visão Geral do Projeto</h2>
+                <div class="methodology-content">
+                    <p>Esta análise foi desenvolvida para investigar os padrões de homicídios contra pessoas LGBTQI+ no Brasil, utilizando dados oficiais e ferramentas modernas de análise de dados. O objetivo é fornecer insights baseados em evidências para informar políticas públicas e ações de combate à violência.</p>
+                </div>
+            </section>
+
+            <!-- Fontes de Dados -->
+            <section class="section">
+                <h2>📊 Fontes de Dados</h2>
+                <div class="methodology-grid">
+                    <div class="methodology-card">
+                        <h3>Base dos Dados</h3>
+                        <p><strong>Plataforma:</strong> Base dos Dados (basedosdados.org)</p>
+                        <p><strong>Dataset:</strong> Relatório GGB (Grupo Gay da Bahia)</p>
+                        <p><strong>Período:</strong> 2011 - 2020</p>
+                        <p><strong>Link:</strong> <a href="https://basedosdados.org/dataset/br-ggb-relatorio-lgbtqi" target="_blank">br-ggb-relatorio-lgbtqi</a></p>
+                    </div>
+                    
+                    <div class="methodology-card">
+                        <h3>Tipos de Dados Coletados</h3>
+                        <ul>
+                            <li>Homicídios por ano (Brasil)</li>
+                            <li>Distribuição por grupo LGBTQI+</li>
+                            <li>Análise por localidade</li>
+                            <li>Dados por raça/cor</li>
+                            <li>Causas de óbito</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Ferramentas Utilizadas -->
+            <section class="section">
+                <h2>🛠️ Ferramentas e Tecnologias</h2>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <h3>R</h3>
+                        <p><strong>Versão:</strong> 4.2.0+</p>
+                        <p><strong>Uso:</strong> Análise estatística e processamento de dados</p>
+                        <p><strong>Pacotes:</strong></p>
+                        <ul>
+                            <li>basedosdados - Conexão com BigQuery</li>
+                            <li>tidyverse - Manipulação de dados</li>
+                            <li>bigrquery - Autenticação Google Cloud</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h3>BigQuery</h3>
+                        <p><strong>Plataforma:</strong> Google Cloud Platform</p>
+                        <p><strong>Projeto:</strong> inspired-bus-461420-t4</p>
+                        <p><strong>Função:</strong> Armazenamento e consulta de dados</p>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h3>HTML/CSS/JavaScript</h3>
+                        <p><strong>HTML5:</strong> Estrutura da página</p>
+                        <p><strong>CSS3:</strong> Estilização responsiva</p>
+                        <p><strong>JavaScript:</strong> Interatividade e gráficos</p>
+                        <p><strong>Chart.js:</strong> Visualização de dados</p>
+                    </div>
+                    
+                    <div class="tool-card">
+                        <h3>GitHub</h3>
+                        <p><strong>Controle de Versão:</strong> Git</p>
+                        <p><strong>Repositório:</strong> projetoFinal_ES_GR02</p>
+                        <p><strong>Colaboração:</strong> Trabalho em equipe</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Metodologia de Análise -->
+            <section class="section">
+                <h2>📈 Metodologia de Análise</h2>
+                <div class="methodology-steps">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3>Coleta de Dados</h3>
+                        <p>Utilização de queries SQL para extrair dados específicos das tabelas do Base dos Dados, garantindo a qualidade e integridade dos dados.</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3>Processamento</h3>
+                        <p>Limpeza e transformação dos dados usando R e tidyverse, incluindo tratamento de valores ausentes e padronização de formatos.</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3>Análise Estatística</h3>
+                        <p>Cálculo de estatísticas descritivas, tendências temporais e análises comparativas entre diferentes grupos e localidades.</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <h3>Visualização</h3>
+                        <p>Criação de gráficos interativos e dashboards para comunicar os resultados de forma clara e acessível.</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">5</div>
+                        <h3>Interpretação</h3>
+                        <p>Análise contextual dos resultados, considerando fatores sociais, políticos e econômicos que podem influenciar os dados.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Queries SQL Utilizadas -->
+            <section class="section">
+                <h2>🔍 Queries SQL Utilizadas</h2>
+                <div class="sql-examples">
+                    <div class="sql-card">
+                        <h3>Dados Gerais do Brasil</h3>
+                        <pre><code>SELECT
+    dados.homicidios as homicidios,
+    dados.ano as ano
+FROM `basedosdados.br_ggb_relatorio_lgbtqi.brasil` AS dados</code></pre>
+                    </div>
+                    
+                    <div class="sql-card">
+                        <h3>Análise por Grupo</h3>
+                        <pre><code>SELECT
+    dados.grupo as grupo,
+    dados.prop_homicidios_total as prop_homicidios_total,
+    dados.ano as ano,
+    dados.homicidios as homicidios
+FROM `basedosdados.br_ggb_relatorio_lgbtqi.grupo_lgbtqia` AS dados</code></pre>
+                    </div>
+                    
+                    <div class="sql-card">
+                        <h3>Dados por Localidade</h3>
+                        <pre><code>SELECT
+    dados.homicidios as homicidios,
+    dados.ano as ano,
+    dados.local as local,
+    dados.prop_homicidios_total as prop_homicidios_total
+FROM `basedosdados.br_ggb_relatorio_lgbtqi.local` AS dados</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Limitações -->
+            <section class="section">
+                <h2>⚠️ Limitações e Considerações</h2>
+                <div class="limitations">
+                    <div class="limitation-card">
+                        <h3>Subnotificação</h3>
+                        <p>Os dados podem estar subestimados devido à subnotificação de crimes contra LGBTQI+, especialmente em regiões com menor visibilidade da comunidade.</p>
+                    </div>
+                    
+                    <div class="limitation-card">
+                        <h3>Classificação</h3>
+                        <p>A classificação de orientação sexual e identidade de gênero pode variar entre diferentes fontes e períodos, afetando a consistência dos dados.</p>
+                    </div>
+                    
+                    <div class="limitation-card">
+                        <h3>Cobertura Geográfica</h3>
+                        <p>Algumas regiões podem ter dados incompletos ou ausentes, limitando a representatividade nacional da análise.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Equipe -->
+            <section class="section">
+                <h2>👥 Equipe de Desenvolvimento</h2>
+                <div class="team-info">
+                    <p><strong>Projeto:</strong> projetoFinal_ES_GR02</p>
+                    <p><strong>Disciplina:</strong>Probabilidade e Estatística</p>
+                    <p><strong>Grupo:</strong> GR02</p>
+                    <p><strong>Período:</strong> 2025</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>Relação entre Gráficos/Tabelas e Arquivos de Dados</h2>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Gráfico/Tabela</th>
+                                <th>Arquivo(s) de Dados Utilizado(s)</th>
+                                <th>Anos Disponíveis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><a href="../html/index.html#evolucao-temporal">Evolução Temporal dos Homicídios</a></td><td>homicidios_brasil.csv</td><td>2000-2019</td></tr>
+                            <tr><td><a href="../html/index.html#distribuicao-grupo">Distribuição por Grupo LGBTQI+</a></td><td>homicidios_grupo.csv</td><td>2011-2020</td></tr>
+                            <tr><td><a href="../html/index.html#homicidios-local">Homicídios por Localidade</a></td><td>homicidios_local.csv</td><td>2019</td></tr>
+                            <tr><td><a href="../html/index.html#homicidios-raca">Análise por Raça/Cor</a></td><td>homicidios_raca.csv</td><td>2011-2019</td></tr>
+                            <tr><td><a href="../html/index.html#causas-obito">Causas de Óbito (Pizza)</a></td><td>CausaObito.csv</td><td>2019</td></tr>
+                            <tr><td><a href="../html/analise-detalhada.html#boxplot-causa-obito">Causas de Óbito (Boxplot)</a></td><td>CausaObito.csv</td><td>2019</td></tr>
+                            <tr><td><a href="../html/analise-detalhada.html#homicidios-grupo-tempo">Homicídios por Grupo ao Longo dos Anos</a></td><td>homicidios_grupo.csv</td><td>2011-2020</td></tr>
+                            <tr><td><a href="../html/analise-detalhada.html#proporcao-local-ano">Proporção de Homicídios por Localidade e Ano</a></td><td>homicidios_local.csv</td><td>2019</td></tr>
+                            <tr><td><a href="../html/analise-detalhada.html#heatmap-grupo-raca">Distribuição de Homicídios por Raça/Cor ao Longo do Tempo</a></td><td>homicidios_raca.csv</td><td>2011-2019</td></tr>
+                            <tr><td><a href="../html/analise-detalhada.html#stats-table-body">Estatísticas Descritivas dos Homicídios</a></td><td>homicidios_brasil.csv</td><td>2000-2019</td></tr>
+                            <tr><td><a href="../html/analise-detalhada.html#intervalo-confianca">Intervalo de Confiança</a></td><td>homicidios_brasil.csv</td><td>2000-2019</td></tr>
+                            <tr><td><a href="../html/tabelas.html">Tabelas completas (tabelas.html)</a></td><td>Todos os arquivos CSV da pasta /data</td><td>Ver cada tabela</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="../js/metodologia.js"></script>
+        
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 - Análise de Dados sobre Homicídios LGBTQI+ no Brasil</p>
+            <p>Dados: Relatório GGB (Grupo Gay da Bahia) | Desenvolvido para fins educacionais</p>
+        </div>
+    </footer>
+</body>
+</html> 
