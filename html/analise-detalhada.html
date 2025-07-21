@@ -15,10 +15,10 @@
                 <a href="index.html">📊 Análise LGBTQI+</a>
             </div>
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">Dashboard</a></li>
-                <li><a href="analise-detalhada.html" class="nav-link active">Análise Detalhada</a></li>
-
                 <li><a href="metodologia.html" class="nav-link">Metodologia</a></li>
+                <li><a href="index.html" class="nav-link">Análise Inicial</a></li>
+                <li><a href="analise-detalhada.html" class="nav-link active">Análise Detalhada</a></li>
+                <li><a href="tabelas.html" class="nav-link">Tabelas</a></li>
             </ul>
         </div>
     </nav>
@@ -29,7 +29,7 @@
             <p class="subtitle">Exploração aprofundada dos dados, tendências e interpretações</p>
             <div class="periodo-analise">
                 <span class="periodo-label">Período da Análise:</span>
-                <span class="periodo-datas">2011 - 2020</span>
+                <span class="periodo-datas">2000 - 2020</span>
             </div>
         </div>
     </header>
@@ -82,7 +82,7 @@
                     <canvas id="boxplot-causa-obito"></canvas>
                 </div>
                 <div class="chart-description">
-                    <p>Este boxplot mostra a distribuição dos homicídios por causa de óbito, permitindo identificar outliers, mediana e quartis para cada tipo de violência.</p>
+                    <p>Este gráfico mostra a distribuição dos homicídios por causa de óbito. <strong>Os dados detalhados de causa de óbito estão disponíveis apenas para o ano de 2019.</strong></p>
                 </div>
             </section>
 
@@ -93,7 +93,7 @@
                     <table class="stats-table">
                         <thead>
                             <tr>
-                                <th>Ano</th>
+                                <th>Período</th>
                                 <th>Média</th>
                                 <th>Mediana</th>
                                 <th>Desvio Padrão</th>
@@ -106,6 +106,9 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="chart-description">
+                    <p>Os valores apresentados nesta tabela (média, mediana, desvio padrão, mínimo e máximo) foram calculados a partir dos dados reais de homicídios totais por ano, conforme registrados no arquivo <strong>homicidios_brasil.csv</strong>, considerando todo o período disponível nos dados.</p>
+                </div>
             </section>
 
             <!-- Intervalo de Confiança -->
@@ -116,29 +119,6 @@
                 </div>
                 <div class="chart-description">
                     <p>Este gráfico mostra os intervalos de confiança de 95% para as proporções de homicídios, indicando a faixa onde a proporção real pode estar.</p>
-                </div>
-            </section>
-
-            <!-- Tabela Dinâmica -->
-            <section class="section">
-                <h2>Tabela Dinâmica: Homicídios por Ano e Causa</h2>
-                <div class="pivot-table-container">
-                    <table class="pivot-table">
-                        <thead>
-                            <tr>
-                                <th>Ano</th>
-                                <th>Arma de Fogo</th>
-                                <th>Arma Branca</th>
-                                <th>Espancamento</th>
-                                <th>Asfixia</th>
-                                <th>Outros</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody id="pivot-table-body">
-                            <!-- Dados serão inseridos via JavaScript -->
-                        </tbody>
-                    </table>
                 </div>
             </section>
 
@@ -164,25 +144,6 @@
                 </ul>
             </section>
 
-            <!-- Recomendações Específicas -->
-            <section class="section">
-                <h2>Recomendações Específicas</h2>
-                <div class="recommendations">
-                    <div class="recommendation-card">
-                        <h3>Monitoramento Contínuo</h3>
-                        <p>Reforçar a coleta e atualização dos dados, com recortes detalhados por grupo, raça e localidade.</p>
-                    </div>
-                    <div class="recommendation-card">
-                        <h3>Políticas Interseccionais</h3>
-                        <p>Desenvolver políticas públicas que considerem a sobreposição de vulnerabilidades (ex: raça e identidade de gênero).</p>
-                    </div>
-                    <div class="recommendation-card">
-                        <h3>Capacitação Regional</h3>
-                        <p>Investir em capacitação de agentes públicos nas regiões mais críticas, promovendo acolhimento e prevenção.</p>
-                    </div>
-                </div>
-            </section>
-        </div>
     </main>
 
     <footer class="footer">

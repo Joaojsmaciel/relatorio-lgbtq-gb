@@ -14,17 +14,22 @@
                 <a href="index.html">📊 Análise LGBTQI+</a>
             </div>
             <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link">Dashboard</a></li>
-                <li><a href="analise-detalhada.html" class="nav-link">Análise Detalhada</a></li>
                 <li><a href="metodologia.html" class="nav-link active">Metodologia</a></li>
+                <li><a href="index.html" class="nav-link">Análise Inicial</a></li>
+                <li><a href="analise-detalhada.html" class="nav-link">Análise Detalhada</a></li>
+                <li><a href="tabelas.html" class="nav-link">Tabelas</a></li>
             </ul>
         </div>
     </nav>
 
     <header class="header">
         <div class="container">
-            <h1>Metodologia da Análise</h1>
-            <p class="subtitle">Como foi desenvolvida esta análise de dados</p>
+            <h1>Metodologia</h1>
+            <p class="subtitle">Descrição dos métodos, fontes e critérios utilizados</p>
+            <div class="periodo-analise">
+                <span class="periodo-label">Período da Análise:</span>
+                <span class="periodo-datas">2000 - 2020</span>
+            </div>
         </div>
     </header>
 
@@ -199,12 +204,44 @@ FROM `basedosdados.br_ggb_relatorio_lgbtqi.local` AS dados</code></pre>
                 <h2>👥 Equipe de Desenvolvimento</h2>
                 <div class="team-info">
                     <p><strong>Projeto:</strong> projetoFinal_ES_GR02</p>
-                    <p><strong>Disciplina:</strong> Estatística</p>
+                    <p><strong>Disciplina:</strong>Probabilidade e Estatística</p>
                     <p><strong>Grupo:</strong> GR02</p>
                     <p><strong>Período:</strong> 2025</p>
                 </div>
             </section>
-        </div>
+
+            <section class="section">
+                <h2>Relação entre Gráficos/Tabelas e Arquivos de Dados</h2>
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Gráfico/Tabela</th>
+                                <th>Arquivo(s) de Dados Utilizado(s)</th>
+                                <th>Anos Disponíveis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><a href="../html/index.html#evolucao-temporal">Evolução Temporal dos Homicídios</a></td><td>homicidios_brasil.csv</td><td>2000-2019</td></tr>
+                            <tr><td><a href="../html/index.html#distribuicao-grupo">Distribuição por Grupo LGBTQI+</a></td><td>homicidios_grupo.csv</td><td>2011-2020</td></tr>
+                            <tr><td><a href="../html/index.html#homicidios-local">Homicídios por Localidade</a></td><td>homicidios_local.csv</td><td>2019</td></tr>
+                            <tr><td><a href="../html/index.html#homicidios-raca">Análise por Raça/Cor</a></td><td>homicidios_raca.csv</td><td>2011-2019</td></tr>
+                            <tr><td><a href="../html/index.html#causas-obito">Causas de Óbito (Pizza)</a></td><td>CausaObito.csv</td><td>2019</td></tr>
+                            <tr><td><a href="../html/analise-detalhada.html#boxplot-causa-obito">Causas de Óbito (Boxplot)</a></td><td>CausaObito.csv</td><td>2019</td></tr>
+                            <tr><td><a href="../html/analise-detalhada.html#homicidios-grupo-tempo">Homicídios por Grupo ao Longo dos Anos</a></td><td>homicidios_grupo.csv</td><td>2011-2020</td></tr>
+                            <tr><td><a href="../html/analise-detalhada.html#proporcao-local-ano">Proporção de Homicídios por Localidade e Ano</a></td><td>homicidios_local.csv</td><td>2019</td></tr>
+                            <tr><td><a href="../html/analise-detalhada.html#heatmap-grupo-raca">Distribuição de Homicídios por Raça/Cor ao Longo do Tempo</a></td><td>homicidios_raca.csv</td><td>2011-2019</td></tr>
+                            <tr><td><a href="../html/analise-detalhada.html#stats-table-body">Estatísticas Descritivas dos Homicídios</a></td><td>homicidios_brasil.csv</td><td>2000-2019</td></tr>
+                            <tr><td><a href="../html/analise-detalhada.html#intervalo-confianca">Intervalo de Confiança</a></td><td>homicidios_brasil.csv</td><td>2000-2019</td></tr>
+                            <tr><td><a href="../html/tabelas.html">Tabelas completas (tabelas.html)</a></td><td>Todos os arquivos CSV da pasta /data</td><td>Ver cada tabela</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script src="../js/metodologia.js"></script>
+        
     </main>
 
     <footer class="footer">

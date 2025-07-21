@@ -43,37 +43,70 @@ const dadosHomicidios = {
     ]
 };
 
-// Função para calcular estatísticas
-function calcularEstatisticas() {
-    const totalHomicidios = dadosHomicidios.brasil.reduce((sum, item) => sum + item.homicidios, 0);
-    const anoMaisVitimas = dadosHomicidios.brasil.reduce((max, item) => 
-        item.homicidios > max.homicidios ? item : max
-    );
-    const grupoMaisAfetado = dadosHomicidios.grupo.reduce((max, item) => 
-        item.homicidios > max.homicidios ? item : max
-    );
-    const localMaisCritico = dadosHomicidios.local.reduce((max, item) => 
-        item.homicidios > max.homicidios ? item : max
-    );
-
-    // Atualizar estatísticas no DOM
-    document.getElementById('total-homicidios').textContent = totalHomicidios.toLocaleString('pt-BR');
-    document.getElementById('ano-mais-vitimas').textContent = anoMaisVitimas.ano;
-    document.getElementById('grupo-mais-afetado').textContent = grupoMaisAfetado.grupo;
-    document.getElementById('local-mais-critico').textContent = localMaisCritico.local;
+// Função para ler CSV local
+async function lerCSV(path) {
+    const resp = await fetch(path);
+    const texto = await resp.text();
+    const linhas = texto.trim().split('\n').filter(l => l.trim() !== '');
+    const colunas = linhas[0].split(',').map(c => c.trim());
+    return linhas.slice(1).map(linha => {
+        const valores = linha.split(',').map(v => v.trim());
+        const obj = {};
+        colunas.forEach((col, i) => {
+            obj[col] = (i < valores.length && valores[i] !== undefined) ? valores[i] : '';
+        });
+        return obj;
+    });
 }
 
-// Função para criar gráfico de evolução temporal
-function criarGraficoEvolucaoTemporal() {
+// Função para calcular estatísticas reais
+async function calcularEstatisticas() {
+    const dadosBrasil = await lerCSV('../data/homicidios_brasil.csv');
+    const dadosGrupo = await lerCSV('../data/homicidios_grupo.csv');
+    const dadosLocal = await lerCSV('../data/homicidios_local.csv');
+
+    // Total de homicídios
+    const totalHomicidios = dadosBrasil.reduce((sum, item) => sum + Number(item.homicidios), 0);
+    document.getElementById('total-homicidios').textContent = totalHomicidios.toLocaleString('pt-BR');
+
+    // Ano com mais vítimas
+    const anoMaisVitimas = dadosBrasil.reduce((max, item) => Number(item.homicidios) > Number(max.homicidios) ? item : max, dadosBrasil[0]);
+    document.getElementById('ano-mais-vitimas').textContent = anoMaisVitimas.ano;
+
+    // Grupo mais afetado
+    const grupos = {};
+    dadosGrupo.forEach(item => {
+        if (item.grupo && item.homicidios && item.homicidios !== 'NA') {
+            grupos[item.grupo] = (grupos[item.grupo] || 0) + Number(item.homicidios);
+        }
+    });
+    const grupoMaisAfetado = Object.entries(grupos).reduce((max, curr) => curr[1] > max[1] ? curr : max, ['', 0]);
+    document.getElementById('grupo-mais-afetado').textContent = grupoMaisAfetado[0];
+
+    // Local mais crítico
+    const locais = {};
+    dadosLocal.forEach(item => {
+        if (item.local && item.homicidios && item.homicidios !== 'NA') {
+            locais[item.local] = (locais[item.local] || 0) + Number(item.homicidios);
+        }
+    });
+    const localMaisCritico = Object.entries(locais).reduce((max, curr) => curr[1] > max[1] ? curr : max, ['', 0]);
+    document.getElementById('local-mais-critico').textContent = localMaisCritico[0];
+}
+
+// Função para criar gráfico de evolução temporal com dados reais
+async function criarGraficoEvolucaoTemporal() {
     const ctx = document.getElementById('evolucao-temporal').getContext('2d');
-    
+    const dadosBrasil = await lerCSV('../data/homicidios_brasil.csv');
+    const anos = dadosBrasil.map(item => item.ano);
+    const valores = dadosBrasil.map(item => Number(item.homicidios));
     new Chart(ctx, {
         type: 'line',
         data: {
-            labels: dadosHomicidios.brasil.map(item => item.ano),
+            labels: anos,
             datasets: [{
                 label: 'Homicídios LGBTQI+',
-                data: dadosHomicidios.brasil.map(item => item.homicidios),
+                data: valores,
                 borderColor: '#667eea',
                 backgroundColor: 'rgba(102, 126, 234, 0.1)',
                 borderWidth: 3,
@@ -106,16 +139,23 @@ function criarGraficoEvolucaoTemporal() {
     });
 }
 
-// Função para criar gráfico de distribuição por grupo
-function criarGraficoDistribuicaoGrupo() {
+// Função para criar gráfico de distribuição por grupo com dados reais
+async function criarGraficoDistribuicaoGrupo() {
     const ctx = document.getElementById('distribuicao-grupo').getContext('2d');
-    
+    const dadosGrupo = await lerCSV('../data/homicidios_grupo.csv');
+    // Agrupar por grupo e somar homicídios (ignorando valores NA)
+    const gruposUnicos = [...new Set(dadosGrupo.map(d => d.grupo))];
+    const data = gruposUnicos.map(grupo => {
+        return dadosGrupo
+            .filter(d => d.grupo === grupo && d.homicidios && d.homicidios !== 'NA')
+            .reduce((sum, d) => sum + Number(d.homicidios), 0);
+    });
     new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: dadosHomicidios.grupo.map(item => item.grupo),
+            labels: gruposUnicos,
             datasets: [{
-                data: dadosHomicidios.grupo.map(item => item.homicidios),
+                data: data,
                 backgroundColor: [
                     '#667eea',
                     '#764ba2',
@@ -123,8 +163,11 @@ function criarGraficoDistribuicaoGrupo() {
                     '#f5576c',
                     '#4facfe',
                     '#00f2fe',
-                    '#43e97b'
-                ],
+                    '#43e97b',
+                    '#ffb347',
+                    '#ff6a00',
+                    '#c471f5'
+                ].slice(0, gruposUnicos.length),
                 borderWidth: 2,
                 borderColor: '#fff'
             }]
@@ -145,17 +188,24 @@ function criarGraficoDistribuicaoGrupo() {
     });
 }
 
-// Função para criar gráfico de homicídios por local
-function criarGraficoHomicidiosLocal() {
+// Função para criar gráfico de homicídios por local com dados reais
+async function criarGraficoHomicidiosLocal() {
     const ctx = document.getElementById('homicidios-local').getContext('2d');
-    
+    const dadosLocal = await lerCSV('../data/homicidios_local.csv');
+    // Agrupar por local e somar homicídios (ignorando valores NA)
+    const locaisUnicos = [...new Set(dadosLocal.map(d => d.local))];
+    const data = locaisUnicos.map(local => {
+        return dadosLocal
+            .filter(d => d.local === local && d.homicidios && d.homicidios !== 'NA')
+            .reduce((sum, d) => sum + Number(d.homicidios), 0);
+    });
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: dadosHomicidios.local.map(item => item.local),
+            labels: locaisUnicos,
             datasets: [{
                 label: 'Homicídios',
-                data: dadosHomicidios.local.map(item => item.homicidios),
+                data: data,
                 backgroundColor: '#667eea',
                 borderColor: '#764ba2',
                 borderWidth: 1
@@ -186,24 +236,36 @@ function criarGraficoHomicidiosLocal() {
     });
 }
 
-// Função para criar gráfico de homicídios por raça/cor
-function criarGraficoHomicidiosRaca() {
+// Função para criar gráfico de homicídios por raça/cor com dados reais
+async function criarGraficoHomicidiosRaca() {
     const ctx = document.getElementById('homicidios-raca').getContext('2d');
-    
+    const dadosRaca = await lerCSV('../data/homicidios_raca.csv');
+    // Agrupar por raca_cor e somar homicídios (ignorando valores NA)
+    const racasUnicas = [...new Set(dadosRaca.map(d => d.raca_cor))];
+    const data = racasUnicas.map(raca => {
+        return dadosRaca
+            .filter(d => d.raca_cor === raca && d.homicidios && d.homicidios !== 'NA')
+            .reduce((sum, d) => sum + Number(d.homicidios), 0);
+    });
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: dadosHomicidios.raca.map(item => item.raca_cor),
+            labels: racasUnicas,
             datasets: [{
                 label: 'Homicídios',
-                data: dadosHomicidios.raca.map(item => item.homicidios),
+                data: data,
                 backgroundColor: [
                     '#667eea',
                     '#764ba2',
                     '#f093fb',
                     '#f5576c',
-                    '#4facfe'
-                ],
+                    '#4facfe',
+                    '#43e97b',
+                    '#ffb347',
+                    '#00f2fe',
+                    '#ff6a00',
+                    '#c471f5'
+                ].slice(0, racasUnicas.length),
                 borderWidth: 1
             }]
         },
@@ -232,23 +294,35 @@ function criarGraficoHomicidiosRaca() {
     });
 }
 
-// Função para criar gráfico de causas de óbito
-function criarGraficoCausasObito() {
+// Função para criar gráfico de causas de óbito com dados reais
+async function criarGraficoCausasObito() {
     const ctx = document.getElementById('causas-obito').getContext('2d');
-    
+    const dadosCausaObito = await lerCSV('../data/CausaObito.csv');
+    // Agrupar por causa e somar homicídios (caso haja mais de um ano no futuro)
+    const causas = [...new Set(dadosCausaObito.map(d => d.causa_obito))];
+    const data = causas.map(causa => {
+        return dadosCausaObito
+            .filter(d => d.causa_obito === causa)
+            .reduce((sum, d) => sum + Number(d.homicidios), 0);
+    });
     new Chart(ctx, {
         type: 'pie',
         data: {
-            labels: dadosHomicidios.causaObito.map(item => item.causa_obito),
+            labels: causas,
             datasets: [{
-                data: dadosHomicidios.causaObito.map(item => item.homicidios),
+                data: data,
                 backgroundColor: [
                     '#667eea',
                     '#764ba2',
                     '#f093fb',
                     '#f5576c',
-                    '#4facfe'
-                ],
+                    '#4facfe',
+                    '#43e97b',
+                    '#ffb347',
+                    '#00f2fe',
+                    '#ff6a00',
+                    '#c471f5'
+                ].slice(0, causas.length),
                 borderWidth: 2,
                 borderColor: '#fff'
             }]
@@ -269,34 +343,62 @@ function criarGraficoCausasObito() {
     });
 }
 
-// Função para preencher tabela de dados
-function preencherTabelaDados() {
+// Função para preencher tabela de dados com dados reais (sem repetições)
+async function preencherTabelaDados() {
     const tbody = document.getElementById('tabela-dados');
-    
-    // Combinar dados de diferentes fontes para criar linhas da tabela
-    const dadosCombinados = [];
-    
-    dadosHomicidios.brasil.forEach(brasil => {
-        dadosHomicidios.grupo.forEach(grupo => {
-            dadosHomicidios.local.forEach(local => {
-                dadosHomicidios.raca.forEach(raca => {
-                    dadosCombinados.push({
-                        ano: brasil.ano,
-                        grupo: grupo.grupo,
-                        local: local.local,
-                        raca_cor: raca.raca_cor,
-                        homicidios: Math.min(brasil.homicidios, grupo.homicidios, local.homicidios, raca.homicidios),
-                        prop: ((Math.min(brasil.homicidios, grupo.homicidios, local.homicidios, raca.homicidios) / 616) * 100).toFixed(1)
-                    });
-                });
+    tbody.innerHTML = '';
+    const dadosGrupo = await lerCSV('../data/homicidios_grupo.csv');
+    const dadosLocal = await lerCSV('../data/homicidios_local.csv');
+    const dadosRaca = await lerCSV('../data/homicidios_raca.csv');
+
+    // Coletar todas as linhas reais únicas dos três arquivos
+    let linhas = [];
+    dadosGrupo.forEach(d => {
+        if (d.ano && d.grupo && d.homicidios && d.homicidios !== 'NA') {
+            linhas.push({
+                ano: d.ano,
+                grupo: d.grupo,
+                local: '',
+                raca_cor: '',
+                homicidios: d.homicidios
             });
-        });
+        }
     });
-    
-    // Limitar a 20 linhas para não sobrecarregar a tabela
-    const dadosLimitados = dadosCombinados.slice(0, 20);
-    
-    dadosLimitados.forEach(item => {
+    dadosLocal.forEach(d => {
+        if (d.ano && d.local && d.homicidios && d.homicidios !== 'NA') {
+            linhas.push({
+                ano: d.ano,
+                grupo: '',
+                local: d.local,
+                raca_cor: '',
+                homicidios: d.homicidios
+            });
+        }
+    });
+    dadosRaca.forEach(d => {
+        if (d.ano && d.raca_cor && d.homicidios && d.homicidios !== 'NA') {
+            linhas.push({
+                ano: d.ano,
+                grupo: '',
+                local: '',
+                raca_cor: d.raca_cor,
+                homicidios: d.homicidios
+            });
+        }
+    });
+    // Remover duplicatas exatas
+    const seen = new Set();
+    linhas = linhas.filter(item => {
+        const key = `${item.ano}|${item.grupo}|${item.local}|${item.raca_cor}|${item.homicidios}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+    // Ordenar por ano decrescente
+    linhas.sort((a, b) => b.ano.localeCompare(a.ano));
+    // Limitar a 20 linhas
+    linhas = linhas.slice(0, 20);
+    linhas.forEach(item => {
         const row = document.createElement('tr');
         row.innerHTML = `
             <td>${item.ano}</td>
@@ -304,20 +406,20 @@ function preencherTabelaDados() {
             <td>${item.local}</td>
             <td>${item.raca_cor}</td>
             <td>${item.homicidios}</td>
-            <td>${item.prop}%</td>
+            <td></td>
         `;
         tbody.appendChild(row);
     });
 }
 
 // Função para inicializar todos os gráficos e dados
-function inicializarPagina() {
+async function inicializarPagina() {
     calcularEstatisticas();
-    criarGraficoEvolucaoTemporal();
-    criarGraficoDistribuicaoGrupo();
+    await criarGraficoEvolucaoTemporal();
+    await criarGraficoDistribuicaoGrupo();
     criarGraficoHomicidiosLocal();
     criarGraficoHomicidiosRaca();
-    criarGraficoCausasObito();
+    await criarGraficoCausasObito();
     preencherTabelaDados();
 }
 

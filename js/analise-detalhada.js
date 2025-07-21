@@ -125,26 +125,30 @@ async function prepararDadosReais() {
     // 4. Dados de causa de óbito para boxplot
     const dadosCausaObito = await lerCSV('../data/CausaObito.csv');
     
-    // 5. Preparar dados para estatísticas descritivas
-    const estatisticasAnuais = anos.map(ano => {
-        const dadosAno = dadosBrasil.filter(d => d.ano === ano);
-        const homicidios = dadosAno.map(d => Number(d.homicidios));
-        return {
-            ano,
-            media: homicidios.reduce((a, b) => a + b, 0) / homicidios.length,
-            mediana: calcularMediana(homicidios),
-            desvioPadrao: calcularDesvioPadrao(homicidios),
-            minimo: Math.min(...homicidios),
-            maximo: Math.max(...homicidios)
-        };
-    });
+    // 5. Preparar dados para estatísticas descritivas (agora globais)
+    const homicidiosBrasilTodosAnos = dadosBrasil.map(d => Number(d.homicidios)).filter(v => !isNaN(v));
+    const estatisticasAnuais = [{
+        periodo: anos.length > 1 ? anos[0] + ' - ' + anos[anos.length - 1] : anos[0],
+        media: homicidiosBrasilTodosAnos.reduce((a, b) => a + b, 0) / homicidiosBrasilTodosAnos.length,
+        mediana: calcularMediana(homicidiosBrasilTodosAnos),
+        desvioPadrao: calcularDesvioPadrao(homicidiosBrasilTodosAnos),
+        minimo: Math.min(...homicidiosBrasilTodosAnos),
+        maximo: Math.max(...homicidiosBrasilTodosAnos)
+    }];
 
-    // 6. Preparar dados para intervalo de confiança
+    // 6. Preparar dados para intervalo de confiança (agora usando dados reais)
+    const homicidiosBrasil = dadosBrasil.map(d => Number(d.homicidios)).filter(v => !isNaN(v));
+    const media = homicidiosBrasil.reduce((a, b) => a + b, 0) / homicidiosBrasil.length;
+    const desvioPadrao = calcularDesvioPadrao(homicidiosBrasil);
+    const erroPadrao = desvioPadrao / Math.sqrt(homicidiosBrasil.length);
+    const z = 1.96; // 95%
+    const limiteInferior = media - z * erroPadrao;
+    const limiteSuperior = media + z * erroPadrao;
     const dadosIntervaloConfiancaProcessados = [{
-        grupo: 'Proporção Média',
-        media: 25.5,
-        limiteInferior: 22.1,
-        limiteSuperior: 28.9
+        grupo: 'Média dos anos',
+        media: media,
+        limiteInferior: limiteInferior,
+        limiteSuperior: limiteSuperior
     }];
 
     // 7. Preparar dados para tabela dinâmica
@@ -253,36 +257,47 @@ function graficoDistribuicaoRaca(ctx, anos, racas, dadosRacaProcessados) {
     });
 }
 
-// Gráfico 4: Boxplot por causa de óbito
-function graficoBoxplot(ctx, dadosCausaObito) {
-    const causas = [...new Set(dadosCausaObito.map(d => d.causa_obito))];
-    const datasets = causas.map((causa, i) => {
-        const dados = dadosCausaObito.filter(d => d.causa_obito === causa).map(d => Number(d.homicidios));
-        const { q1, q3 } = calcularQuartis(dados);
-        const mediana = calcularMediana(dados);
-        const min = Math.min(...dados);
-        const max = Math.max(...dados);
-        
-        return {
-            label: causa,
-            data: [min, q1, mediana, q3, max],
-            backgroundColor: palette[i % palette.length],
-            borderColor: palette[i % palette.length],
-            borderWidth: 2
-        };
+// Função para popular o select de anos
+function popularSelectAnoBoxplot(anos) {
+    const select = document.getElementById('ano-boxplot');
+    select.innerHTML = '';
+    anos.forEach(ano => {
+        const option = document.createElement('option');
+        option.value = ano;
+        option.textContent = ano;
+        select.appendChild(option);
     });
+}
 
-    new Chart(ctx, {
+// Função para criar gráfico de barras por causa de óbito para 2019
+function graficoBoxplot2019(ctx, dadosCausaObito) {
+    const causas = [...new Set(dadosCausaObito.map(d => d.causa_obito))];
+    const dados2019 = dadosCausaObito.filter(d => d.ano === '2019' || d.ano === 2019);
+    const data = causas.map(causa => {
+        const item = dados2019.find(d => d.causa_obito === causa);
+        return item ? Number(item.homicidios) : 0;
+    });
+    if (window.boxplotChart) {
+        window.boxplotChart.destroy();
+    }
+    window.boxplotChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Mínimo', 'Q1', 'Mediana', 'Q3', 'Máximo'],
-            datasets
+            labels: causas,
+            datasets: [{
+                label: 'Homicídios por Causa de Óbito (2019)',
+                data: data,
+                backgroundColor: causas.map((_, i) => palette[i % palette.length])
+            }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            plugins: { legend: { position: 'bottom' } },
-            scales: { y: { beginAtZero: true } }
+            plugins: { legend: { display: false } },
+            scales: {
+                x: { stacked: false },
+                y: { beginAtZero: true }
+            }
         }
     });
 }
@@ -361,7 +376,7 @@ function preencherTabelaEstatisticas(estatisticasAnuais) {
     estatisticasAnuais.forEach(stat => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td>${stat.ano}</td>
+            <td>${stat.periodo}</td>
             <td>${stat.media.toFixed(2)}</td>
             <td>${stat.mediana.toFixed(2)}</td>
             <td>${stat.desvioPadrao.toFixed(2)}</td>
@@ -369,26 +384,6 @@ function preencherTabelaEstatisticas(estatisticasAnuais) {
             <td>${stat.maximo}</td>
         `;
         tbody.appendChild(row);
-    });
-}
-
-// Função para preencher tabela dinâmica
-function preencherTabelaDinamica(tabelaDinamica) {
-    const tbody = document.getElementById('pivot-table-body');
-    tbody.innerHTML = '';
-    
-    tabelaDinamica.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${row.ano}</td>
-            <td>${row.armaFogo}</td>
-            <td>${row.armaBranca}</td>
-            <td>${row.espancamento}</td>
-            <td>${row.asfixia}</td>
-            <td>${row.outros}</td>
-            <td><strong>${row.total}</strong></td>
-        `;
-        tbody.appendChild(tr);
     });
 }
 
@@ -418,7 +413,7 @@ async function inicializarAnaliseDetalhada() {
         
         // Novos gráficos
         if (document.getElementById('boxplot-causa-obito')) {
-            graficoBoxplot(document.getElementById('boxplot-causa-obito').getContext('2d'), dadosCausaObito);
+            graficoBoxplot2019(document.getElementById('boxplot-causa-obito').getContext('2d'), dadosCausaObito);
         }
         
         if (document.getElementById('intervalo-confianca')) {
@@ -432,10 +427,6 @@ async function inicializarAnaliseDetalhada() {
         // Tabelas
         if (document.getElementById('stats-table-body')) {
             preencherTabelaEstatisticas(estatisticasAnuais);
-        }
-        
-        if (document.getElementById('pivot-table-body')) {
-            preencherTabelaDinamica(tabelaDinamica);
         }
         
         console.log('Todos os gráficos foram inicializados com sucesso!');
