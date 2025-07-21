@@ -368,6 +368,42 @@ function graficoPizza(ctx, dadosPizza) {
     });
 }
 
+// Função para criar gráfico de pizza de homicídios por localidade (2019)
+function graficoPizzaLocalidade(ctx, dadosLocal) {
+    // Filtrar apenas 2019
+    const dados2019 = dadosLocal.filter(d => d.ano === '2019' || d.ano === 2019);
+    const locais = [...new Set(dados2019.map(d => d.local))];
+    const data = locais.map(local => {
+        const item = dados2019.find(d => d.local === local && d.prop_homicidios_total && d.prop_homicidios_total !== 'NA');
+        return item ? Number(item.prop_homicidios_total) : 0;
+    });
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: locais,
+            datasets: [{
+                data: data,
+                backgroundColor: palette.slice(0, locais.length),
+                borderWidth: 2,
+                borderColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true
+                    }
+                }
+            }
+        }
+    });
+}
+
 // Função para preencher tabela de estatísticas
 function preencherTabelaEstatisticas(estatisticasAnuais) {
     const tbody = document.getElementById('stats-table-body');
@@ -422,6 +458,10 @@ async function inicializarAnaliseDetalhada() {
         
         if (document.getElementById('pizza-causa-obito')) {
             graficoPizza(document.getElementById('pizza-causa-obito').getContext('2d'), dadosPizza);
+        }
+
+        if (document.getElementById('pizza-localidade')) {
+            graficoPizzaLocalidade(document.getElementById('pizza-localidade').getContext('2d'), await lerCSV('../data/homicidios_local.csv'));
         }
         
         // Tabelas
